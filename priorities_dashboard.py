@@ -7,7 +7,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Custom CSS to match the exact styling from the screenshot
+# Custom CSS with fixed styling
 st.markdown("""
     <style>
     .main, .stApp {
@@ -15,22 +15,40 @@ st.markdown("""
         padding: 1rem;
     }
     
+    .grid-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+        margin-top: 2rem;
+    }
+    
     .card {
-        background-color: #1a1a1a;
+        background-color: #1E1E1E;
         color: white;
-        border-radius: 10px;
-        padding: 0.75rem;
-        margin-bottom: 0.5rem;
+        border-radius: 4px;
+        padding: 0.75rem 1rem;
+        margin-bottom: 0.75rem;
+        font-family: 'Courier New', monospace;
         position: relative;
-        font-family: monospace;
+        min-height: 2.5rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+    
+    .card-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        width: 100%;
     }
     
     .priority {
         position: absolute;
-        top: 0.5rem;
-        right: 0.5rem;
-        padding: 0.25rem 0.5rem;
-        border-radius: 4px;
+        top: 0.75rem;
+        right: 0.75rem;
+        padding: 0.15rem 0.5rem;
+        border-radius: 2px;
         font-size: 0.8rem;
     }
     
@@ -43,24 +61,33 @@ st.markdown("""
         font-size: 0.9em;
         margin-top: 0.5rem;
         font-family: system-ui;
+        display: block;
+    }
+    
+    .project-title {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
     }
     
     .arrow {
         color: #666;
-        margin-left: 0.5rem;
+        margin-left: 0.25rem;
     }
     
     h1 {
         color: #4A235A;
         text-align: center;
         font-size: 2rem;
-        margin-bottom: 2rem;
+        margin: 1rem 0 2rem 0;
+        font-weight: bold;
     }
     
     .section-title {
         color: white;
         font-size: 1.5rem;
         margin-bottom: 1rem;
+        font-weight: 500;
     }
     </style>
     """, unsafe_allow_html=True)
@@ -91,15 +118,19 @@ upcoming_projects = [
 ]
 
 def create_project_card(project):
-    """Creates a card with the exact styling from the screenshot"""
-    arrow = '>>' if project.get('has_arrow', False) else ''
-    subtitle = f'<div class="subtitle">{project["subtitle"]}</div>' if 'subtitle' in project else ''
+    """Creates a card with consistent styling and proper HTML structure"""
+    arrow = ' >>' if project.get('has_arrow', False) else ''
+    subtitle = f'<span class="subtitle">{project["subtitle"]}</span>' if 'subtitle' in project else ''
     
     return f"""
     <div class="card">
-        <div>/div</div>
-        <span class="priority priority-{project['priority'].lower()}">{project['priority']}</span>
-        {project['name']} {arrow}
+        <div class="card-content">
+            <div class="project-title">
+                /div
+                {project['name']}{arrow}
+            </div>
+            <span class="priority priority-{project['priority'].lower()}">{project['priority']}</span>
+        </div>
         {subtitle}
     </div>
     """
