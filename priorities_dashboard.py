@@ -29,11 +29,13 @@ st.markdown("""
         margin: 0.5rem 0;
         color: white;
         font-family: monospace;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
     }
     
-    .task-title {
-        display: inline-block;
-        margin-right: 0.5rem;
+    .task-content {
+        flex-grow: 1;
     }
     
     .task-description {
@@ -49,8 +51,8 @@ st.markdown("""
         color: white;
         padding: 0.1rem 0.5rem;
         border-radius: 2px;
-        float: right;
         font-size: 0.8rem;
+        margin-left: 0.5rem;
     }
     
     .priority-m {
@@ -58,8 +60,8 @@ st.markdown("""
         color: white;
         padding: 0.1rem 0.5rem;
         border-radius: 2px;
-        float: right;
         font-size: 0.8rem;
+        margin-left: 0.5rem;
     }
     
     .priority-l {
@@ -67,8 +69,8 @@ st.markdown("""
         color: white;
         padding: 0.1rem 0.5rem;
         border-radius: 2px;
-        float: right;
         font-size: 0.8rem;
+        margin-left: 0.5rem;
     }
     
     h1 {
@@ -118,15 +120,17 @@ tasks = {
 }
 
 def create_task_card(task):
-    """Create a task card with monospace styling and proper HTML structure"""
-    chevrons = '<span class="chevrons">>></span>' if task.get('has_chevron') else ''
+    """Create a task card with monospace styling"""
+    chevrons = ' >>' if task.get('has_chevron') else ''
     description = f'<div class="task-description">{task["description"]}</div>' if 'description' in task else ''
     
     return f"""
-        <div class="task-card">/div
-            {task['title']} {chevrons}
+        <div class="task-card">
+            <div class="task-content">
+                /div {task['title']}{chevrons}
+                {description}
+            </div>
             <span class="priority-{task['priority'].lower()}">{task['priority']}</span>
-            {description}
         </div>
     """
 
