@@ -1,71 +1,74 @@
 import streamlit as st
-import pandas as pd
 
-# Configure the page layout and title with company styling
+# Configure the page layout and title
 st.set_page_config(
     page_title="Backlog Remainder 2024",
-    layout="wide",  # Use full width
-    initial_sidebar_state="collapsed"  # Hide sidebar by default
+    layout="wide",
+    initial_sidebar_state="collapsed"
 )
 
-# Custom CSS to match company styling
+# Custom CSS to match the exact styling from the screenshot
 st.markdown("""
     <style>
-    /* Main background and layout */
     .main, .stApp {
         background-color: #E67E22;
-    }
-    
-    /* Project card styling */
-    div[data-testid="stHorizontalBlock"] > div {
-        background-color: white;
         padding: 1rem;
-        border-radius: 10px;
-        margin-bottom: 1rem;
     }
     
-    /* Priority badge colors */
-    .priority {
-        padding: 4px 8px;
-        border-radius: 4px;
+    .card {
+        background-color: #1a1a1a;
         color: white;
-        float: right;
+        border-radius: 10px;
+        padding: 0.75rem;
+        margin-bottom: 0.5rem;
+        position: relative;
+        font-family: monospace;
     }
+    
+    .priority {
+        position: absolute;
+        top: 0.5rem;
+        right: 0.5rem;
+        padding: 0.25rem 0.5rem;
+        border-radius: 4px;
+        font-size: 0.8rem;
+    }
+    
     .priority-s { background-color: #27AE60; }
     .priority-m { background-color: #3498DB; }
     .priority-l { background-color: #E74C3C; }
     
-    /* Subtitle styling */
     .subtitle {
-        color: #7F8C8D;
+        color: #666;
         font-size: 0.9em;
-        margin-top: 4px;
+        margin-top: 0.5rem;
+        font-family: system-ui;
     }
     
-    /* Footer styling */
-    .footer {
-        background-color: rgba(0, 0, 0, 0.1);
-        padding: 20px;
-        border-radius: 10px;
-        text-align: center;
-        color: white;
-        margin-top: 30px;
-    }
-
-    /* Arrow indicator styling */
     .arrow {
-        color: #95A5A6;
-        font-weight: bold;
-        margin-left: 8px;
+        color: #666;
+        margin-left: 0.5rem;
+    }
+    
+    h1 {
+        color: #4A235A;
+        text-align: center;
+        font-size: 2rem;
+        margin-bottom: 2rem;
+    }
+    
+    .section-title {
+        color: white;
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
     }
     </style>
     """, unsafe_allow_html=True)
 
-# Page title with company styling
-st.markdown('<h1 style="text-align: center; color: #4A235A; font-size: 2.5em; margin-bottom: 2rem;">BACKLOG REMAINDER 2024</h1>', 
-            unsafe_allow_html=True)
+# Page title
+st.markdown('<h1>BACKLOG REMAINDER 2024</h1>', unsafe_allow_html=True)
 
-# Define project data structures
+# Project data
 ongoing_projects = [
     {"name": "Easypay", "priority": "L", "has_arrow": True},
     {"name": "Plan A", "subtitle": "Set-up firms CTRL-F & National Dedicated", "priority": "M"},
@@ -88,17 +91,16 @@ upcoming_projects = [
 ]
 
 def create_project_card(project):
-    """Creates a styled card for a project using HTML/CSS."""
-    arrow = ' <span class="arrow">>></span>' if project.get('has_arrow', False) else ''
+    """Creates a card with the exact styling from the screenshot"""
+    arrow = '>>' if project.get('has_arrow', False) else ''
     subtitle = f'<div class="subtitle">{project["subtitle"]}</div>' if 'subtitle' in project else ''
     
     return f"""
-    <div style="display: flex; justify-content: space-between; align-items: start;">
-        <div style="flex-grow: 1;">
-            <strong>{project['name']}{arrow}</strong>
-            {subtitle}
-        </div>
+    <div class="card">
+        <div>/div</div>
         <span class="priority priority-{project['priority'].lower()}">{project['priority']}</span>
+        {project['name']} {arrow}
+        {subtitle}
     </div>
     """
 
@@ -107,19 +109,12 @@ col1, col2 = st.columns(2)
 
 # Ongoing projects column
 with col1:
-    st.markdown('<h2 style="color: white; margin-bottom: 1rem;">Ongoing</h2>', unsafe_allow_html=True)
+    st.markdown('<div class="section-title">Ongoing</div>', unsafe_allow_html=True)
     for project in ongoing_projects:
         st.markdown(create_project_card(project), unsafe_allow_html=True)
 
 # Upcoming projects column
 with col2:
-    st.markdown('<h2 style="color: white; margin-bottom: 1rem;">Up next</h2>', unsafe_allow_html=True)
+    st.markdown('<div class="section-title">Up next</div>', unsafe_allow_html=True)
     for project in upcoming_projects:
         st.markdown(create_project_card(project), unsafe_allow_html=True)
-
-# Footer message
-st.markdown("""
-    <div class="footer">
-        As IT, we aim to always work on our highest priority first. We work in a top/down manner in order to drive forward the items with the highest impact.
-    </div>
-    """, unsafe_allow_html=True)
