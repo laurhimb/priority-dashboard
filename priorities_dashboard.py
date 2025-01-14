@@ -15,13 +15,6 @@ st.markdown("""
         padding: 1rem;
     }
     
-    .container {
-        background-color: white;
-        border-radius: 8px;
-        padding: 1rem;
-        margin-bottom: 1rem;
-    }
-    
     .task-card {
         background-color: #1a1a1a;
         border-radius: 4px;
@@ -53,6 +46,8 @@ st.markdown("""
         border-radius: 2px;
         font-size: 0.8rem;
         margin-left: 0.5rem;
+        min-width: 1.5rem;
+        text-align: center;
     }
     
     .priority-m {
@@ -62,6 +57,8 @@ st.markdown("""
         border-radius: 2px;
         font-size: 0.8rem;
         margin-left: 0.5rem;
+        min-width: 1.5rem;
+        text-align: center;
     }
     
     .priority-l {
@@ -71,6 +68,8 @@ st.markdown("""
         border-radius: 2px;
         font-size: 0.8rem;
         margin-left: 0.5rem;
+        min-width: 1.5rem;
+        text-align: center;
     }
     
     h1 {
@@ -89,6 +88,7 @@ st.markdown("""
     
     .chevrons {
         color: #666;
+        margin-left: 0.25rem;
     }
     </style>
     """, unsafe_allow_html=True)
@@ -126,10 +126,7 @@ def create_task_card(task):
     
     return f"""
         <div class="task-card">
-            <div class="task-content">
-                /div {task['title']}{chevrons}
-                {description}
-            </div>
+            <div class="task-content">{task['title']}{chevrons}{description}</div>
             <span class="priority-{task['priority'].lower()}">{task['priority']}</span>
         </div>
     """
