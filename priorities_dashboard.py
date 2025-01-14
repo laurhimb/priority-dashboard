@@ -7,145 +7,170 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Custom CSS with fixed styling
+# Custom CSS to match React styling
 st.markdown("""
     <style>
+    /* Main container styling */
     .main, .stApp {
-        background-color: #E67E22;
-        padding: 1rem;
+        background-color: rgb(249, 115, 22);
+        padding: 1.5rem;
     }
     
-    .grid-container {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 2rem;
-        margin-top: 2rem;
-    }
-    
-    .card {
-        background-color: #1E1E1E;
-        color: white;
-        border-radius: 4px;
-        padding: 0.75rem 1rem;
-        margin-bottom: 0.75rem;
-        font-family: 'Courier New', monospace;
-        position: relative;
-        min-height: 2.5rem;
+    /* Task item styling */
+    .task-item {
         display: flex;
-        flex-direction: column;
-        justify-content: space-between;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem;
+        margin-bottom: 0.5rem;
+        background-color: white;
+        border-radius: 0.5rem;
+        border: 1px solid rgb(254, 215, 170);
     }
     
-    .card-content {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        width: 100%;
+    .task-title {
+        font-weight: 500;
+        color: rgb(31, 41, 55);
     }
     
-    .priority {
-        position: absolute;
-        top: 0.75rem;
-        right: 0.75rem;
-        padding: 0.15rem 0.5rem;
-        border-radius: 2px;
-        font-size: 0.8rem;
+    .task-description {
+        font-size: 0.875rem;
+        color: rgb(107, 114, 128);
     }
     
-    .priority-s { background-color: #27AE60; }
-    .priority-m { background-color: #3498DB; }
-    .priority-l { background-color: #E74C3C; }
-    
-    .subtitle {
-        color: #666;
-        font-size: 0.9em;
-        margin-top: 0.5rem;
-        font-family: system-ui;
-        display: block;
-    }
-    
-    .project-title {
+    /* Priority indicators */
+    .priority-indicators {
         display: flex;
         align-items: center;
         gap: 0.5rem;
     }
     
-    .arrow {
-        color: #666;
-        margin-left: 0.25rem;
+    .priority-s {
+        background-color: rgb(220, 252, 231);
+        color: rgb(22, 101, 52);
+        padding: 0.125rem 0.5rem;
+        border-radius: 0.25rem;
+        font-size: 0.875rem;
     }
     
-    h1 {
-        color: #4A235A;
-        text-align: center;
-        font-size: 2rem;
-        margin: 1rem 0 2rem 0;
-        font-weight: bold;
+    .priority-m {
+        background-color: rgb(219, 234, 254);
+        color: rgb(30, 64, 175);
+        padding: 0.125rem 0.5rem;
+        border-radius: 0.25rem;
+        font-size: 0.875rem;
     }
     
-    .section-title {
+    .priority-l {
+        background-color: rgb(243, 232, 255);
+        color: rgb(107, 33, 168);
+        padding: 0.125rem 0.5rem;
+        border-radius: 0.25rem;
+        font-size: 0.875rem;
+    }
+    
+    .chevrons {
+        color: black;
+        font-size: 0.875rem;
+        letter-spacing: -0.3em;
+        padding-right: 0.6em;
+    }
+
+    /* Section headers */
+    .section-header {
         color: white;
-        font-size: 1.5rem;
+        font-size: 1.875rem;
+        font-weight: 600;
         margin-bottom: 1rem;
-        font-weight: 500;
+    }
+    
+    /* Footer styling */
+    .footer {
+        margin-top: 2rem;
+        background-color: rgb(234, 88, 12);
+        padding: 1rem;
+        border-radius: 0.5rem;
+        text-align: center;
+        color: white;
+    }
+
+    /* Grid layout */
+    .grid-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 3rem;
     }
     </style>
     """, unsafe_allow_html=True)
 
-# Page title
-st.markdown('<h1>BACKLOG REMAINDER 2024</h1>', unsafe_allow_html=True)
+# Data structure matching React state
+tasks = {
+    'ongoing': [
+        {"id": "1", "title": "Easypay", "size": "L", "isHighPriority": True},
+        {"id": "2", "title": "Plan A", "description": "Set-up firms CTRL-F & National Dedicated", "size": "M"},
+        {"id": "3", "title": "Square migration", "size": "M"},
+        {"id": "4", "title": "Open minded hiring", "size": "S", "isHighPriority": True},
+        {"id": "5", "title": "Automated onboarding", "description": "dig sig EHBO kit", "size": "M", "isHighPriority": True},
+        {"id": "6", "title": "Bullhorn4SalesForce integration", "size": "S"},
+        {"id": "7", "title": "Business Central", "size": "L"},
+        {"id": "8", "title": "Contract ready", "description": "automated via OCR", "size": "S", "isHighPriority": True}
+    ],
+    'upNext': [
+        {"id": "9", "title": "Tax Exemption", "description": "legal changes", "size": "S", "hasAddition": True},
+        {"id": "10", "title": "Legal changes", "size": "S"},
+        {"id": "11", "title": "ATS Integration", "description": "Connecting Expertise improvements", "size": "S"},
+        {"id": "12", "title": "RLPLYR", "size": "S"},
+        {"id": "13", "title": "Admin", "description": "planning improvements", "size": "M"},
+        {"id": "14", "title": "Job satisfaction data analysis", "description": "impact", "size": "S"},
+        {"id": "15", "title": "ATS integration", "description": "Jobtoolz", "size": "M"}
+    ]
+}
 
-# Project data
-ongoing_projects = [
-    {"name": "Easypay", "priority": "L", "has_arrow": True},
-    {"name": "Plan A", "subtitle": "Set-up firms CTRL-F & National Dedicated", "priority": "M"},
-    {"name": "Square migration", "priority": "M"},
-    {"name": "Open minded hiring", "priority": "S", "has_arrow": True},
-    {"name": "Automated onboarding", "subtitle": "dig sig EHBO kit", "priority": "M", "has_arrow": True},
-    {"name": "Bullhorn4SalesForce integration", "priority": "S"},
-    {"name": "Business Central", "priority": "L"},
-    {"name": "Contract ready", "subtitle": "automated via OCR", "priority": "S", "has_arrow": True}
-]
-
-upcoming_projects = [
-    {"name": "Tax Exemption", "subtitle": "legal changes", "priority": "S"},
-    {"name": "Legal changes", "priority": "S"},
-    {"name": "ATS Integration", "subtitle": "Connecting Expertise improvements", "priority": "S"},
-    {"name": "RLPLYR", "priority": "S"},
-    {"name": "Admin", "subtitle": "planning improvements", "priority": "M"},
-    {"name": "Job satisfaction data analysis", "subtitle": "iimpact", "priority": "S"},
-    {"name": "ATS integration", "subtitle": "Jobtoolz", "priority": "M"}
-]
-
-def create_project_card(project):
-    """Creates a card with consistent styling and proper HTML structure"""
-    arrow = ' >>' if project.get('has_arrow', False) else ''
-    subtitle = f'<span class="subtitle">{project["subtitle"]}</span>' if 'subtitle' in project else ''
+def create_task_item(task):
+    """Create HTML for a task item matching React component styling"""
+    description = f"<span class='task-description'>({task['description']})</span>" if 'description' in task else ""
+    addition = "<span>+</span>" if task.get('hasAddition') else ""
+    chevrons = "<span class='chevrons'>>></span>" if task.get('isHighPriority') else ""
     
     return f"""
-    <div class="card">
-        <div class="card-content">
-            <div class="project-title">
-                /div
-                {project['name']}{arrow}
+    <div class="task-item">
+        <span style="color: rgb(156, 163, 175);">≡</span>
+        <div style="flex-grow: 1;">
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <span class="task-title">{task['title']}</span>
+                {addition}
+                {description}
             </div>
-            <span class="priority priority-{project['priority'].lower()}">{project['priority']}</span>
         </div>
-        {subtitle}
+        <div class="priority-indicators">
+            {chevrons}
+            <span class="priority-{task['size'].lower()}">{task['size']}</span>
+        </div>
     </div>
     """
+
+# Page title
+st.markdown('<h1 style="text-align: center; color: rgb(88, 28, 135); font-size: 2.25rem; font-weight: 700; margin-bottom: 2rem;">BACKLOG REMAINDER 2024</h1>', 
+            unsafe_allow_html=True)
 
 # Create two-column layout
 col1, col2 = st.columns(2)
 
-# Ongoing projects column
+# Ongoing tasks column
 with col1:
-    st.markdown('<div class="section-title">Ongoing</div>', unsafe_allow_html=True)
-    for project in ongoing_projects:
-        st.markdown(create_project_card(project), unsafe_allow_html=True)
+    st.markdown('<h2 class="section-header">Ongoing</h2>', unsafe_allow_html=True)
+    for task in tasks['ongoing']:
+        st.markdown(create_task_item(task), unsafe_allow_html=True)
 
-# Upcoming projects column
+# Up next tasks column
 with col2:
-    st.markdown('<div class="section-title">Up next</div>', unsafe_allow_html=True)
-    for project in upcoming_projects:
-        st.markdown(create_project_card(project), unsafe_allow_html=True)
+    st.markdown('<h2 class="section-header">Up next</h2>', unsafe_allow_html=True)
+    for task in tasks['upNext']:
+        st.markdown(create_task_item(task), unsafe_allow_html=True)
+
+# Footer
+st.markdown("""
+    <div class="footer">
+        As IT, we aim to always work on our highest priority first. We work in a top/down manner in order to drive forward the items with the highest impact.
+    </div>
+    """, unsafe_allow_html=True)
